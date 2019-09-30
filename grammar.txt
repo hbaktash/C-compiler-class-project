@@ -1,0 +1,45 @@
+"program declaration-list EOF #main_check"
+"declaration-list decleration declaration-list | EPS"
+"declaration var-declaration | fun-declaration"
+"var-declaration type-specifier ID #p_token #assert_repetition var-declaration-extension"
+"var-declaration-extension #p_id ; | [ Num #push_constant ] #p_array_and_size ;"
+"type-specifier int #set_type | void #set_type"
+"fun-declaration type-specifier ID #push_function_id #save_fun_address( params ) compound-stmt"
+"params param-list | void"
+"param-list param #add_to_func param-list-extension"
+"param-list-extension EPS | , param-list"
+
+"param type-specifier ID #p_token param-extension" 
+"param-extension EPS #p_id | [] #p_id"
+"compound-stmt { #inc_scope declaration-list statement-list #dec_scope }"
+"statement-list statement statement-list"
+"statement expression-stmt | compound-stmt | selection-stmt | iteration-stmt | return-stmt | switch-stmt"
+"expression-stmt expression ; | continue ; #jp_to_save #assert_in_while | break ; #jp_to_address_for_break #assert_in_while | ;"
+
+selection-stmt if ( expression ) statement else statement
+"iteration-stmt while #jp_for_break #save ( expression #jpf ) statement #jp_to_top #jpf_set"
+
+"return-stmt return return-stmt-extension ; #jp_to_caller"
+"return-stmt-extension EPS #assert_void | expression #assert_type #set_return_value"
+
+"switch-stmt switch #push_temp_address ( expression ) { case-stmts default-stmt #jp_last_line }"
+"case-stmts case-stmt case-stmts | EPS"
+"case-stmt case NUM #push_constant #jpf_save : statement-list #jp_saved_address #jpf_set"
+"default-stmt default : statement-list | EPS"
+
+"expression var = expression #assert_type_check #assign_and_keep | simple-expression"
+"var ID #p_id"
+"var_extension EPS #assert_var | #assert_arr [ expression #assert_index ] #p_arr_value"
+"simple-expression additive-expression simple-expression-extension"
+"simple-expression-extension relop-additive-expresion #assert_op_type #relative_calc| EPS:
+"relop < #less_op | == #equal_op"
+"additive-expression term additive-expression-extension"
+"additive-expresion-extension add_op additive-expresion #assert_op_type #additive_calc | EPS"
+"addop + #p_add_op | - #sub_op
+"term factor * term #mult | factor"
+"term-extension
+"factor ( expression ) | var | call | NUM #push_constant"
+"call ID #p_func_id #push_zero ( args ) #assert_args_count #call_func "
+"args arg-list | EPS"
+"arg-list expression #assert_arg_type #put_arg arg-list-extension"
+"arg-list-extension , arg-list | EPS
