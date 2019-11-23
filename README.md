@@ -5,4 +5,4 @@ The compiler also has a semantic analyzer.
 Functions are supported.
 Recursive functions are not supported.
 
-Development of this code has been a pair-programming effort by [Hossein Baktash](https://github.com/hbaktash) and [Sahar Mavali](Smavali@ymail.com).
+Development of this code has been a pair-programming effort by [Hossein Baktash](https://github.com/hbaktash) and [Sahar Mavali](https://github.com/sahar1998).
